@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruhe 152 Italian Bistro</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#f6f1e7; --card:#fffdf8; --ink:#1d2433; --muted:#5d6472; --line:#e3dccd;
+  --accent:#b3261e; --accent-ink:#fff; --chip:#efe7d6; --ok:#1f7a4d; --banner:#fff3c4; --banner-ink:#5a4500;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#13161d; --card:#1c2029; --ink:#ece6da; --muted:#a3a8b3; --line:#2c313c;
+    --accent:#e0483e; --accent-ink:#fff; --chip:#262b36; --ok:#4cc38a; --banner:#3a3216; --banner-ink:#f3dc8a;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+.wrap{max-width:520px;margin:0 auto;padding-inline:16px;padding-block:0 40px}
+.demo-banner{background:var(--banner);color:var(--banner-ink);font-size:13px;text-align:center;padding:8px 16px}
+.hero{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:0 0 18px 18px;max-width:100%}
+header{padding:18px 0 6px}
+h1{font:700 30px/1.1 Georgia,"Times New Roman",serif;margin:0;letter-spacing:-.01em}
+.tag{color:var(--muted);margin:6px 0 0}
+.status{display:inline-flex;gap:6px;align-items:center;margin-top:10px;font-size:14px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.status.open .dot{background:var(--ok)}
+.status.open b{color:var(--ok)}
+.pole{height:6px;margin:16px 0 4px;border-radius:3px;
+  background:repeating-linear-gradient(135deg,var(--accent) 0 12px,var(--card) 12px 20px,#2b4c9b 20px 32px,var(--card) 32px 40px)}
+h2{font:700 13px/1 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:24px 0 10px}
+ul{list-style:none;margin:0;padding:0}
+.svc{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:14px;margin-bottom:10px}
+.svc>div{flex:1;min-width:0}
+.svc b{display:block;font-size:17px}
+.mins{color:var(--muted);font-size:13px}
+.price{font-weight:700;font-variant-numeric:tabular-nums}
+.book{appearance:none;border:0;background:var(--accent);color:var(--accent-ink);font:600 15px system-ui,sans-serif;
+  padding:10px 16px;border-radius:999px;cursor:pointer;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.book:focus-visible,.chip:focus-visible,.primary:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.hours li{display:flex;justify-content:space-between;padding:8px 2px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.hours li.today{font-weight:700}
+.contact{margin:18px 0 0}
+.contact .num{font-weight:700}
+.contact a{color:var(--accent);margin-left:6px}
+.community{display:block;text-align:center;margin-top:22px;padding:12px;border:1.5px dashed var(--line);border-radius:12px;color:var(--ink);text-decoration:none}
+footer{color:var(--muted);font-size:12px;text-align:center;margin-top:28px}
+/* booking sheet */
+.scrim{position:fixed;inset:0;background:rgba(10,12,18,.5);display:flex;align-items:flex-end;justify-content:center;z-index:10}
+.sheet{background:var(--card);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;
+  padding:18px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.sheet h3{margin:0;font:700 20px Georgia,serif}
+.x{border:0;background:var(--chip);color:var(--ink);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer}
+.step{font-size:13px;font-weight:700;color:var(--muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--chip);color:var(--ink);border-radius:12px;padding:10px 12px;
+  font:500 14px system-ui,sans-serif;cursor:pointer;white-space:nowrap;min-height:44px}
+.chip small{display:block;color:var(--muted);font-size:12px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.chip:disabled{opacity:.35;text-decoration:line-through;cursor:default}
+.field{width:100%;font:16px system-ui,sans-serif;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.primary{width:100%;margin-top:18px;border:0;border-radius:14px;padding:15px;background:var(--accent);color:var(--accent-ink);
+  font:700 17px system-ui,sans-serif;cursor:pointer}
+.primary:disabled{opacity:.4;cursor:default}
+.note{color:var(--muted);font-size:13px;margin:10px 0 0;text-align:center}
+.done{text-align:center;padding:12px 0}
+.check{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:34px;line-height:64px;margin:6px auto 12px}
+.summary{background:var(--bg);border-radius:12px;padding:12px;margin-top:12px;text-align:left}
+.summary div{display:flex;justify-content:space-between;padding:4px 0}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .22s ease-out}@keyframes up{from{transform:translateY(40px);opacity:0}}}
+</style>
+</head>
+<body>
+<div class="demo-banner">Preview built for Ruhe 152 Italian Bistro by Nosey Neighbors Nappanee. Not their live page.</div>
+<div class="wrap">
+  
+  <header>
+    <h1>Ruhe 152 Italian Bistro</h1>
+    <p class="tag">Italian restaurant · Nappanee, IN</p>
+    <div class="status" id="status"><span class="dot"></span><span id="status-text"></span></div>
+    
+  </header>
+
+  <h2>What's here</h2>
+  <ul>
+<li class="svc"><div><b>Italian restaurant</b></div></li>
+  </ul>
+
+  <h2>Hours</h2>
+  <ul class="hours">
+<li class="nohours">Call for hours</li>
+  </ul>
+  <p class="contact">152 W Market St, Nappanee, IN 46550 <a href="https://www.google.com/maps/search/?api=1&amp;query=152%20W%20Market%20St%2C%20Nappanee%2C%20IN%2046550">Map</a></p>
+  <p class="contact">Call <span class="num">(574) 832-7843</span> <a href="tel:5748327843">tap to call</a></p>
+  <a class="community" href="https://discord.gg/9me7XCyjDN">Join Nosey Neighbors Nappanee on Discord</a>
+  <footer>Preview built for Ruhe 152 Italian Bistro by Nosey Neighbors Nappanee. Details from public listings; owner to confirm.</footer>
+</div>
+
+
+<script type="application/json" id="shop">{"name": "Ruhe 152 Italian Bistro", "hours": {}, "has_hours": false, "slot_minutes": 30, "services": [], "demo": false}</script>
+<script>
+(function () {
+  var shop = JSON.parse(document.getElementById("shop").textContent);
+  var DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  var $ = function (id) { return document.getElementById(id); };
+  var toMin = function (t) { var p = t.split(":"); return +p[0] * 60 + +p[1]; };
+  var fmt = function (m) { var h = Math.floor(m / 60), mm = m % 60;
+    return ((h + 11) % 12 + 1) + (mm ? ":" + String(mm).padStart(2, "0") : "") + (h % 24 < 12 ? " AM" : " PM"); };
+  var esc = function (s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; };
+  var now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
+
+  if (shop.has_hours === false) { $("status").style.display = "none"; return; } // no hours known: say nothing
+
+  // open / closed status and today's hours row
+  var today = shop.hours[DAYS[now.getDay()]];
+  var li = document.querySelector('.hours li[data-day="' + DAYS[now.getDay()] + '"]');
+  if (li) li.classList.add("today");
+  if (today && nowMin >= toMin(today[0]) && nowMin < toMin(today[1])) {
+    $("status").classList.add("open");
+    $("status-text").innerHTML = "<b>Open now</b> · closes " + fmt(toMin(today[1]));
+  } else {
+    $("status-text").textContent = "Closed now" + nextOpenText();
+  }
+  function nextOpenText() {
+    for (var i = 0; i < 8; i++) {
+      var d = new Date(now); d.setDate(d.getDate() + i);
+      var h = shop.hours[DAYS[d.getDay()]];
+      if (!h || (i === 0 && nowMin >= toMin(h[0]))) continue;
+      return " · opens " + (i === 0 ? "today" : i === 1 ? "tomorrow" : d.toLocaleDateString(undefined, { weekday: "long" })) + " " + fmt(toMin(h[0]));
+    }
+    return "";
+  }
+
+  if (!shop.demo) return; // Cal.com mode: Book buttons are plain links
+
+  var state = { svc: 0, day: null, time: null };
+  // demo only: a stable, believable sprinkle of taken slots
+  function taken(key) { // FNV-1a; plain *31 hashing put every taken slot 90 min apart
+    var h = 2166136261; for (var i = 0; i < key.length; i++) h = Math.imul(h ^ key.charCodeAt(i), 16777619);
+    return ((h >>> 0) % 100) < 30; }
+  function slots(d) {
+    var h = shop.hours[DAYS[d.getDay()]], out = [];
+    if (!h) return out;
+    var len = shop.services[state.svc].minutes || shop.slot_minutes, iso = d.toISOString().slice(0, 10);
+    var isToday = d.toDateString() === now.toDateString();
+    for (var m = toMin(h[0]); m + len <= toMin(h[1]); m += shop.slot_minutes)
+      if (!(isToday && m < nowMin + 30)) out.push({ m: m, taken: taken(iso + "|" + m) });
+    return out;
+  }
+  function openDays() {
+    var out = [];
+    for (var i = 0; out.length < 7 && i < 21; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      if (slots(d).some(function (s) { return !s.taken; })) out.push(d);
+    }
+    return out;
+  }
+  function chip(html, pressed, onClick, disabled) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.innerHTML = html;
+    b.setAttribute("aria-pressed", pressed ? "true" : "false");
+    b.disabled = !!disabled; b.onclick = onClick; return b;
+  }
+  function render() {
+    var sc = $("svc-chips"); sc.innerHTML = "";
+    shop.services.forEach(function (s, i) {
+      sc.appendChild(chip(esc(s.name) + "<small>$" + s.price + "</small>", i === state.svc,
+        function () { state.svc = i; state.time = null; render(); }));
+    });
+    var days = openDays(), dc = $("day-chips"); dc.innerHTML = "";
+    if (!state.day || !days.some(function (d) { return d.getTime() === state.day.getTime(); })) state.day = days[0] || null;
+    days.forEach(function (d) {
+      var lbl = d.toDateString() === now.toDateString() ? "Today" : d.toLocaleDateString(undefined, { weekday: "short" });
+      dc.appendChild(chip(lbl + "<small>" + d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + "</small>",
+        state.day && d.getTime() === state.day.getTime(), function () { state.day = d; state.time = null; render(); }));
+    });
+    var tg = $("time-grid"); tg.innerHTML = "";
+    (state.day ? slots(state.day) : []).forEach(function (s) {
+      tg.appendChild(chip(fmt(s.m) + (s.taken ? "<small>Taken</small>" : ""), s.m === state.time,
+        function () { state.time = s.m; render(); }, s.taken));
+    });
+    updateConfirm();
+  }
+  // the button says what's still missing instead of just sitting grey
+  function updateConfirm() {
+    var need = !state.day ? "Pick a day" : state.time === null ? "Pick a time" : !$("name").value.trim() ? "Type your name" : "";
+    $("confirm").disabled = !!need;
+    $("confirm").textContent = need || "Confirm booking";
+  }
+  function open(i) {
+    state.svc = i; state.time = null;
+    $("pick").hidden = false; $("done").hidden = true; $("scrim").hidden = false;
+    document.body.style.overflow = "hidden"; render(); $("close").focus();
+  }
+  function close() { $("scrim").hidden = true; document.body.style.overflow = ""; }
+  document.querySelectorAll("button.book").forEach(function (b) { b.onclick = function () { open(+b.dataset.svc); }; });
+  $("close").onclick = close; $("again").onclick = close;
+  $("scrim").onclick = function (e) { if (e.target === this) close(); };
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("scrim").hidden) close(); });
+  $("name").oninput = updateConfirm;
+  // whole service card is a tap target, not just the small Book pill
+  document.querySelectorAll(".svc").forEach(function (li) {
+    var b = li.querySelector("button.book");
+    if (b) { li.style.cursor = "pointer"; li.onclick = function (e) { if (e.target !== b) b.click(); }; }
+  });
+  $("confirm").onclick = function () {
+    var s = shop.services[state.svc];
+    $("summary").innerHTML =
+      "<div><span>Name</span><b>" + esc($("name").value.trim()) + "</b></div>" +
+      "<div><span>Service</span><b>" + esc(s.name) + "</b></div>" +
+      "<div><span>When</span><b>" + state.day.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }) + ", " + fmt(state.time) + "</b></div>" +
+      "<div><span>Price</span><b>$" + s.price + "</b></div>";
+    $("pick").hidden = true; $("done").hidden = false;
+  };
+})();
+</script>
+</body>
+</html>
