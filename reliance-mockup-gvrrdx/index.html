@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Reliance booking mockup</title>
+<style>
+:root{--bg:#313338;--side:#2b2d31;--rail:#1e1f22;--text:#dbdee1;--mute:#949ba4;--head:#f2f3f5;--brand:#5865f2;--brand2:#4752c4;--ok:#23a559;--line:#3f4147;--embed:#2b2d31;--accent:#34495e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 "gg sans","Segoe UI",system-ui,sans-serif}
+.app{display:grid;grid-template-columns:72px 240px 1fr;height:100dvh}
+.rail{background:var(--rail);padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.rail .srv{width:48px;height:48px;border-radius:16px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px}
+.rail .srv.dim{background:var(--side);color:var(--mute);border-radius:50%}
+.side{background:var(--side);display:flex;flex-direction:column;min-width:0}
+.side h2{margin:0;padding:14px 16px;font-size:15px;color:var(--head);border-bottom:1px solid var(--rail)}
+.chan{padding:8px;overflow:auto}
+.chan .cat{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;padding:14px 8px 4px}
+.chan button{all:unset;display:block;width:100%;padding:6px 8px;border-radius:4px;color:var(--mute);cursor:pointer;box-sizing:border-box}
+.chan button:hover{background:#35373c;color:var(--text)}
+.chan button.on{background:#404249;color:var(--head)}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{padding:12px 16px;border-bottom:1px solid var(--rail);color:var(--head);font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.top small{color:var(--mute);font-weight:400}
+.log{flex:1;overflow:auto;padding:16px;scroll-behavior:smooth}
+.msg{display:flex;gap:12px;margin:0 0 18px;max-width:640px}
+.av{flex:none;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.av.me{background:var(--brand)}
+.who{color:var(--head);font-weight:600}
+.tag{background:var(--brand);color:#fff;font-size:10px;border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.eph{color:var(--mute);font-size:12px;margin-top:6px}
+.embed{background:var(--embed);border-left:4px solid var(--accent);border-radius:4px;padding:12px 14px;margin-top:6px}
+.embed h3{margin:0 0 4px;color:var(--head);font-size:16px}
+.embed p{margin:4px 0}
+.embed .k{color:var(--head);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;padding:8px 16px;border-radius:4px;background:var(--brand);color:#fff;font-weight:500;font-size:14px;min-height:36px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--brand2)}
+.btn.sec{background:#4e5058}.btn.sec:hover{background:#6d6f78}
+.btn.ok{background:var(--ok)}.btn.ok:hover{background:#1a8a46}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+a.btn{text-decoration:none}
+.bar{padding:0 16px 16px}
+.fake{background:#383a40;border-radius:8px;padding:11px 16px;color:var(--mute)}
+.banner{background:#1e1f22;color:#f0b232;text-align:center;font-size:12px;padding:6px 12px}
+.sample{display:inline-block;background:#f0b232;color:#1e1f22;font-size:10px;font-weight:700;border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.reset{all:unset;cursor:pointer;color:var(--mute);font-size:12px;text-decoration:underline}
+@media(max-width:760px){
+ .app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:100dvh}
+ .rail{display:none}
+ .side{border-bottom:1px solid var(--rail)}
+ .side h2{padding:10px 16px}
+ .chan{display:flex;gap:4px;padding:6px 8px;overflow-x:auto}
+ .chan .cat{display:none}
+ .chan button{white-space:nowrap;width:auto}
+ .log{padding:12px}
+}
+</style></head><body>
+<div class="banner">Preview mockup built for Reliance by Nosey Neighbors Nappanee. Not their live page. Menu, prices and times are samples.</div>
+<div class="app">
+ <nav class="rail" aria-label="Servers"><div class="srv" title="Reliance">R</div><div class="srv dim" title="Nosey Neighbors Nappanee">NN</div></nav>
+ <aside class="side"><h2>Reliance</h2><div class="chan" id="chan"></div></aside>
+ <section class="main">
+  <div class="top"><span id="ctitle"># book-here</span><button class="reset" id="reset">Reset demo</button></div>
+  <div class="log" id="log" aria-live="polite"></div>
+  <div class="bar"><div class="fake">Message #book-here (use the buttons above)</div></div>
+ </section>
+</div>
+<script>
+const CFG = {"slug": "reliance-mockup-gvrrdx", "name": "Reliance", "initials": "R", "tagline": "Custom home builder", "address": "201 S Main St, Nappanee, IN 46550", "phone": "(574) 773-4308", "tel": "5747734308", "hours": {"mon": [9.0, 17.0], "tue": [9.0, 17.0], "wed": [9.0, 17.0], "thu": [9.0, 17.0], "fri": [9.0, 17.0]}, "hours_note": "Sample hours. The public listing we used didn't show weekly hours; the owner fills in real ones.", "services": [{"name": "New home consultation"}, {"name": "Floor plan review"}, {"name": "Lot or site visit"}], "sample": true, "welcome": "Pick what you need and a time that works. The office gets it right away.", "deal": {"title": "This month", "body": "A spot for the owner's specials or news. The owner writes this."}, "v": {"button": "\ud83d\udcc5 Book an appointment", "ask": "What can we help with?", "confirm": "Confirm your appointment", "done": "Appointment set \u2705", "again": "\ud83d\udcc5 Book another"}};
+const $ = s => document.querySelector(s);
+const log = $("#log");
+const KEY = "nnn-mock-" + CFG.slug;
+const DAYN = ["sun","mon","tue","wed","thu","fri","sat"];
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+state.booked = state.booked || [];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = h => { const hh = Math.floor(h), mm = Math.round((h - hh) * 60); const ap = hh >= 12 && hh < 24 ? "PM" : "AM"; const x = hh % 12 || 12; return x + ":" + String(mm).padStart(2, "0") + " " + ap; };
+const dkey = d => d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+const dlabel = d => DAYN[d.getDay()].replace(/^./, c => c.toUpperCase()) + " " + MON[d.getMonth()] + " " + d.getDate();
+
+function openDays() {
+  const out = []; const d = new Date(); d.setHours(0,0,0,0);
+  while (out.length < 6) {
+    d.setDate(d.getDate() + 1);
+    const h = CFG.hours[DAYN[d.getDay()]];
+    if (h) out.push({date: new Date(d), open: h[0], close: h[1]});
+  }
+  return out;
+}
+// A few slots look already taken so the picker feels real; deterministic per day/hour.
+const preTaken = (d, h) => ((d.getDate() * 7 + h * 3) % 5) === 0;
+
+function msg(who, html, opts = {}) {
+  const el = document.createElement("div"); el.className = "msg";
+  const av = opts.me ? '<div class="av me">You</div>' : '<div class="av">' + esc(CFG.initials) + '</div>';
+  el.innerHTML = av + '<div style="min-width:0;flex:1"><div><span class="who">' + esc(opts.me ? "Customer" : CFG.name + " Bot") + '</span>' + (opts.me ? "" : '<span class="tag">APP</span>') + '</div>' + html + (opts.eph ? '<div class="eph">Only you can see this</div>' : "") + '</div>';
+  log.appendChild(el); log.scrollTop = log.scrollHeight; return el;
+}
+function buttons(items) {
+  items = items.filter(it => it.href !== "tel:");  // no phone listed: drop the call buttons
+  const row = document.createElement("div"); row.className = "row";
+  items.forEach(it => {
+    let b;
+    if (it.href) { b = document.createElement("a"); b.href = it.href; if (it.href.startsWith("http")) { b.target = "_blank"; b.rel = "noopener"; } }
+    else { b = document.createElement("button"); b.type = "button"; if (it.on) b.addEventListener("click", () => { row.querySelectorAll("button").forEach(x => x.disabled = true); it.on(); }); }
+    b.className = "btn " + (it.cls || ""); b.textContent = it.label; if (it.disabled) b.disabled = true;
+    row.appendChild(b);
+  });
+  return row;
+}
+function say(html, items, opts) { const m = msg("bot", html, opts); if (items) m.lastElementChild.insertBefore(buttons(items), m.lastElementChild.querySelector(":scope > .eph")); return m; }
+function you(text) { msg("me", "<div>" + esc(text) + "</div>", {me: true}); }
+
+function hoursHtml() {
+  const order = ["mon","tue","wed","thu","fri","sat","sun"]; const names = {mon:"Mon",tue:"Tue",wed:"Wed",thu:"Thu",fri:"Fri",sat:"Sat",sun:"Sun"};
+  return order.map(k => names[k] + " " + (CFG.hours[k] ? fmt(CFG.hours[k][0]) + " – " + fmt(CFG.hours[k][1]) : "Closed")).join("<br>");
+}
+function welcome() {
+  log.innerHTML = "";
+  say('<div class="embed"><h3>' + esc(CFG.name) + '</h3><p>' + esc(CFG.tagline) + '</p><p><span class="k">Address</span><br>' + esc(CFG.address) + '</p>' + (CFG.phone ? '<p><span class="k">Phone</span> ' + esc(CFG.phone) + '</p>' : '') + '</div>',
+    [{label: CFG.v.button, on: startBook}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}, {label: "🕘 Hours", on: showHours, cls: "sec"}, {label: "💬 Ask a question", on: askQ, cls: "sec"}]);
+}
+function showHours() { you("Hours"); say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div>', [{label: CFG.v.button, on: startBook}], {eph: true}); }
+function askQ() { you("Ask a question"); say("<div>Type your question and the owner gets it by email and text. <span class='sample'>DEMO</span> In the live version the owner's reply comes back right here.</div>", [{label: "Send: “Do you take walk-ins?”", on: () => { you("Do you take walk-ins?"); say("<div>Sent. The owner will answer here. <span class='sample'>DEMO</span></div>", [{label: CFG.v.button, on: startBook}], {eph: true}); }}], {eph: true}); }
+
+function startBook() {
+  you(CFG.v.button.replace(/^\S+\s/, ""));
+  say("<div><b>" + esc(CFG.v.ask) + "</b> " + (CFG.sample ? "<span class='sample'>SAMPLE MENU</span>" : "") + "</div>",
+    CFG.services.map(s => ({label: s.name + (s.price ? " · " + s.price : ""), on: () => pickDay(s)})), {eph: true});
+}
+function pickDay(svc) {
+  you(svc.name);
+  say("<div><b>Pick a day</b></div>", openDays().map(o => ({label: dlabel(o.date), on: () => pickTime(svc, o)})), {eph: true});
+}
+function pickTime(svc, o) {
+  you(dlabel(o.date));
+  const items = [];
+  for (let h = o.open; h < o.close; h++) {
+    const k = dkey(o.date) + "|" + h;
+    const taken = preTaken(o.date, h) || state.booked.includes(k);
+    items.push({label: fmt(h), disabled: taken, on: () => confirm(svc, o, h)});
+  }
+  say("<div><b>Pick a time</b> <span class='eph'>(greyed out = already taken)</span></div>", items, {eph: true});
+}
+function confirm(svc, o, h) {
+  you(fmt(h));
+  say("<div class='embed'><h3>" + esc(CFG.v.confirm) + "</h3><p><span class='k'>" + esc(svc.name) + "</span><br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "<br>" + esc(CFG.name) + "</p></div>",
+    [{label: "✅ Confirm", cls: "ok", on: () => done(svc, o, h)}, {label: "Cancel", cls: "sec", on: () => { you("Cancel"); say("<div>No problem, nothing was booked.</div>", [{label: CFG.v.button, on: startBook}], {eph: true}); }}], {eph: true});
+}
+function done(svc, o, h) {
+  you("Confirm");
+  state.booked.push(dkey(o.date) + "|" + h); save();
+  say("<div class='embed' style='border-left-color:var(--ok)'><h3>" + esc(CFG.v.done) + "</h3><p>" + esc(svc.name) + "<br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "</p><p class='eph'>What happens next in the live version:<br>• Owner gets an email and a text right away <span class='sample'>DEMO</span><br>• Customer gets a reminder the day before <span class='sample'>DEMO</span><br>• Slot is blocked so nobody double-books</p></div>",
+    [{label: CFG.v.again, on: startBook, cls: "sec"}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}], {eph: true});
+}
+
+const CH = [["welcome","👋 welcome"],["book-here","📅 book-here"],["hours-info","🕘 hours-and-info"],["deals","🏷️ deals"]];
+function drawChans(on) {
+  $("#chan").innerHTML = '<div class="cat">Text channels</div>' + CH.map(c => '<button type="button" data-c="' + c[0] + '" class="' + (c[0] === on ? "on" : "") + '"># ' + esc(c[1].slice(3)) + '</button>').join("");
+  $("#chan").querySelectorAll("button").forEach(b => b.addEventListener("click", () => openChan(b.dataset.c)));
+}
+function openChan(c) {
+  drawChans(c); $("#ctitle").textContent = "# " + c;
+  log.innerHTML = "";
+  if (c === "book-here") welcome();
+  else if (c === "welcome") say('<div class="embed"><h3>Welcome to ' + esc(CFG.name) + '</h3><p>' + esc(CFG.welcome) + '</p></div>', [{label: "📅 Go book", on: () => openChan("book-here")}]);
+  else if (c === "hours-info") say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div><div class="embed"><h3>Find us</h3><p>' + esc(CFG.address) + (CFG.phone ? '<br>' + esc(CFG.phone) : '') + '</p></div>', [{label: "🗺️ Map", href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CFG.name + " " + CFG.address), cls: "sec"}, {label: "📞 Call", href: "tel:" + CFG.tel, cls: "sec"}]);
+  else say('<div class="embed"><h3>' + esc(CFG.deal.title) + ' <span class="sample">SAMPLE</span></h3><p>' + esc(CFG.deal.body) + '</p></div>', [{label: CFG.v.button, on: () => openChan("book-here")}]);
+}
+$("#reset").addEventListener("click", () => { state = {booked: []}; save(); openChan("book-here"); });
+openChan("book-here");
+</script></body></html>

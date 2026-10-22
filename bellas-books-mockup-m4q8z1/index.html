@@ -68,7 +68,7 @@ a.btn{text-decoration:none}
  </section>
 </div>
 <script>
-const CFG = {"slug": "bellas-books-mockup-m4q8z1", "name": "Bella's Books & Curiosities", "initials": "BB", "tagline": "Used books, puzzles and curiosities", "address": "151 S Main St, Nappanee, IN 46550", "phone": "(574) 333-8127", "tel": "5743338127", "hours": {"mon": [10, 18], "tue": [10, 18], "wed": [10, 18], "thu": [10, 18], "fri": [10, 19], "sat": [10, 19]}, "hours_note": "Hours from the public listing; owner to confirm.", "services": [{"name": "Hold a book for pick-up"}, {"name": "Special-order request"}, {"name": "Puzzle and game table"}], "sample": true, "welcome": "Used books, puzzles, games and curiosities on Main Street. Book a pick-up time, ask for a special order, or reserve a table.", "deal": {"title": "First Fridays", "body": "Posted here the week before. The owner decides what goes in this channel."}};
+const CFG = {"slug": "bellas-books-mockup-m4q8z1", "name": "Bella's Books & Curiosities", "initials": "BB", "tagline": "Used books, puzzles and curiosities", "address": "151 S Main St, Nappanee, IN 46550", "phone": "(574) 333-8127", "tel": "5743338127", "hours": {"mon": [10.0, 18.0], "tue": [10.0, 18.0], "wed": [10.0, 18.0], "thu": [10.0, 18.0], "fri": [10.0, 19.0], "sat": [10.0, 19.0]}, "hours_note": "Hours from the public listing; owner to confirm.", "services": [{"name": "Hold a book for pick-up"}, {"name": "Special-order request"}, {"name": "Puzzle and game table"}], "sample": true, "welcome": "Used books, puzzles, games and curiosities on Main Street. Book a pick-up time, ask for a special order, or reserve a table.", "deal": {"title": "First Fridays", "body": "Posted here the week before. The owner decides what goes in this channel."}, "v": {"button": "\ud83d\udcc5 Book now", "ask": "What would you like to book?", "confirm": "Confirm your booking", "done": "You're booked \u2705", "again": "\ud83d\udcc5 Book another"}};
 const $ = s => document.querySelector(s);
 const log = $("#log");
 const KEY = "nnn-mock-" + CFG.slug;
@@ -80,7 +80,7 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } c
 state.booked = state.booked || [];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const fmt = h => { const ap = h >= 12 ? "PM" : "AM"; const x = h % 12 || 12; return x + ":00 " + ap; };
+const fmt = h => { const hh = Math.floor(h), mm = Math.round((h - hh) * 60); const ap = hh >= 12 && hh < 24 ? "PM" : "AM"; const x = hh % 12 || 12; return x + ":" + String(mm).padStart(2, "0") + " " + ap; };
 const dkey = d => d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
 const dlabel = d => DAYN[d.getDay()].replace(/^./, c => c.toUpperCase()) + " " + MON[d.getMonth()] + " " + d.getDate();
 
@@ -103,6 +103,7 @@ function msg(who, html, opts = {}) {
   log.appendChild(el); log.scrollTop = log.scrollHeight; return el;
 }
 function buttons(items) {
+  items = items.filter(it => it.href !== "tel:");  // no phone listed: drop the call buttons
   const row = document.createElement("div"); row.className = "row";
   items.forEach(it => {
     let b;
@@ -122,15 +123,15 @@ function hoursHtml() {
 }
 function welcome() {
   log.innerHTML = "";
-  say('<div class="embed"><h3>' + esc(CFG.name) + '</h3><p>' + esc(CFG.tagline) + '</p><p><span class="k">Address</span><br>' + esc(CFG.address) + '</p><p><span class="k">Phone</span> ' + esc(CFG.phone) + '</p></div>',
-    [{label: "📅 Book now", on: startBook}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}, {label: "🕘 Hours", on: showHours, cls: "sec"}, {label: "💬 Ask a question", on: askQ, cls: "sec"}]);
+  say('<div class="embed"><h3>' + esc(CFG.name) + '</h3><p>' + esc(CFG.tagline) + '</p><p><span class="k">Address</span><br>' + esc(CFG.address) + '</p>' + (CFG.phone ? '<p><span class="k">Phone</span> ' + esc(CFG.phone) + '</p>' : '') + '</div>',
+    [{label: CFG.v.button, on: startBook}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}, {label: "🕘 Hours", on: showHours, cls: "sec"}, {label: "💬 Ask a question", on: askQ, cls: "sec"}]);
 }
-function showHours() { you("Hours"); say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div>', [{label: "📅 Book now", on: startBook}], {eph: true}); }
-function askQ() { you("Ask a question"); say("<div>Type your question and the owner gets it by email and text. <span class='sample'>DEMO</span> In the live version the owner's reply comes back right here.</div>", [{label: "Send: “Do you take walk-ins?”", on: () => { you("Do you take walk-ins?"); say("<div>Sent. The owner will answer here. <span class='sample'>DEMO</span></div>", [{label: "📅 Book now", on: startBook}], {eph: true}); }}], {eph: true}); }
+function showHours() { you("Hours"); say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div>', [{label: CFG.v.button, on: startBook}], {eph: true}); }
+function askQ() { you("Ask a question"); say("<div>Type your question and the owner gets it by email and text. <span class='sample'>DEMO</span> In the live version the owner's reply comes back right here.</div>", [{label: "Send: “Do you take walk-ins?”", on: () => { you("Do you take walk-ins?"); say("<div>Sent. The owner will answer here. <span class='sample'>DEMO</span></div>", [{label: CFG.v.button, on: startBook}], {eph: true}); }}], {eph: true}); }
 
 function startBook() {
-  you("Book now");
-  say("<div><b>What would you like to book?</b> " + (CFG.sample ? "<span class='sample'>SAMPLE MENU</span>" : "") + "</div>",
+  you(CFG.v.button.replace(/^\S+\s/, ""));
+  say("<div><b>" + esc(CFG.v.ask) + "</b> " + (CFG.sample ? "<span class='sample'>SAMPLE MENU</span>" : "") + "</div>",
     CFG.services.map(s => ({label: s.name + (s.price ? " · " + s.price : ""), on: () => pickDay(s)})), {eph: true});
 }
 function pickDay(svc) {
@@ -149,14 +150,14 @@ function pickTime(svc, o) {
 }
 function confirm(svc, o, h) {
   you(fmt(h));
-  say("<div class='embed'><h3>Confirm your booking</h3><p><span class='k'>" + esc(svc.name) + "</span><br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "<br>" + esc(CFG.name) + "</p></div>",
-    [{label: "✅ Confirm", cls: "ok", on: () => done(svc, o, h)}, {label: "Cancel", cls: "sec", on: () => { you("Cancel"); say("<div>No problem, nothing was booked.</div>", [{label: "📅 Book now", on: startBook}], {eph: true}); }}], {eph: true});
+  say("<div class='embed'><h3>" + esc(CFG.v.confirm) + "</h3><p><span class='k'>" + esc(svc.name) + "</span><br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "<br>" + esc(CFG.name) + "</p></div>",
+    [{label: "✅ Confirm", cls: "ok", on: () => done(svc, o, h)}, {label: "Cancel", cls: "sec", on: () => { you("Cancel"); say("<div>No problem, nothing was booked.</div>", [{label: CFG.v.button, on: startBook}], {eph: true}); }}], {eph: true});
 }
 function done(svc, o, h) {
   you("Confirm");
   state.booked.push(dkey(o.date) + "|" + h); save();
-  say("<div class='embed' style='border-left-color:var(--ok)'><h3>You're booked ✅</h3><p>" + esc(svc.name) + "<br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "</p><p class='eph'>What happens next in the live version:<br>• Owner gets an email and a text right away <span class='sample'>DEMO</span><br>• Customer gets a reminder the day before <span class='sample'>DEMO</span><br>• Slot is blocked so nobody double-books</p></div>",
-    [{label: "📅 Book another", on: startBook, cls: "sec"}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}], {eph: true});
+  say("<div class='embed' style='border-left-color:var(--ok)'><h3>" + esc(CFG.v.done) + "</h3><p>" + esc(svc.name) + "<br>" + esc(dlabel(o.date)) + " at " + fmt(h) + "</p><p class='eph'>What happens next in the live version:<br>• Owner gets an email and a text right away <span class='sample'>DEMO</span><br>• Customer gets a reminder the day before <span class='sample'>DEMO</span><br>• Slot is blocked so nobody double-books</p></div>",
+    [{label: CFG.v.again, on: startBook, cls: "sec"}, {label: "📞 Call us", href: "tel:" + CFG.tel, cls: "sec"}], {eph: true});
 }
 
 const CH = [["welcome","👋 welcome"],["book-here","📅 book-here"],["hours-info","🕘 hours-and-info"],["deals","🏷️ deals"]];
@@ -169,8 +170,8 @@ function openChan(c) {
   log.innerHTML = "";
   if (c === "book-here") welcome();
   else if (c === "welcome") say('<div class="embed"><h3>Welcome to ' + esc(CFG.name) + '</h3><p>' + esc(CFG.welcome) + '</p></div>', [{label: "📅 Go book", on: () => openChan("book-here")}]);
-  else if (c === "hours-info") say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div><div class="embed"><h3>Find us</h3><p>' + esc(CFG.address) + '<br>' + esc(CFG.phone) + '</p></div>', [{label: "🗺️ Map", href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CFG.name + " " + CFG.address), cls: "sec"}, {label: "📞 Call", href: "tel:" + CFG.tel, cls: "sec"}]);
-  else say('<div class="embed"><h3>' + esc(CFG.deal.title) + ' <span class="sample">SAMPLE</span></h3><p>' + esc(CFG.deal.body) + '</p></div>', [{label: "📅 Book now", on: () => openChan("book-here")}]);
+  else if (c === "hours-info") say('<div class="embed"><h3>Hours</h3><p>' + hoursHtml() + '</p>' + (CFG.hours_note ? '<p class="eph">' + esc(CFG.hours_note) + '</p>' : "") + '</div><div class="embed"><h3>Find us</h3><p>' + esc(CFG.address) + (CFG.phone ? '<br>' + esc(CFG.phone) : '') + '</p></div>', [{label: "🗺️ Map", href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CFG.name + " " + CFG.address), cls: "sec"}, {label: "📞 Call", href: "tel:" + CFG.tel, cls: "sec"}]);
+  else say('<div class="embed"><h3>' + esc(CFG.deal.title) + ' <span class="sample">SAMPLE</span></h3><p>' + esc(CFG.deal.body) + '</p></div>', [{label: CFG.v.button, on: () => openChan("book-here")}]);
 }
 $("#reset").addEventListener("click", () => { state = {booked: []}; save(); openChan("book-here"); });
 openChan("book-here");
